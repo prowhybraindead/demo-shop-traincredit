@@ -23,6 +23,7 @@ export async function POST(req: NextRequest) {
         const data = await response.json();
         return NextResponse.json(data);
     } catch (e: unknown) {
+        console.error("Checkout Error:", e);
         return NextResponse.json({ error: (e as Error).message }, { status: 500 });
     }
 }
