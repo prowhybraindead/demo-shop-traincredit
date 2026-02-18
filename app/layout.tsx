@@ -1,3 +1,5 @@
+import './globals.css';
+
 export const metadata = {
   title: 'TechHaven | Premium Electronics',
   description: 'The best tech for your setup.',

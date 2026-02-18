@@ -36,7 +36,16 @@ export async function POST(req: Request) {
         return NextResponse.json(data);
 
     } catch (error: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
-        console.error('Checkout Error:', error);
-        return NextResponse.json({ error: error.message || 'Checkout failed' }, { status: 500 });
+        console.error('Checkout API Error:', error);
+
+        // Return better error details for debugging
+        const status = error.cause?.status || 500;
+        const message = error.message || 'Internal Server Error';
+
+        return NextResponse.json({
+            error: message,
+            details: error.toString(),
+            configuredUrl: process.env.NEXT_PUBLIC_CORE_URL // expose config to help user debug
+        }, { status });
     }
 }
