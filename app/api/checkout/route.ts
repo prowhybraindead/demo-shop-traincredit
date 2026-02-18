@@ -5,8 +5,17 @@ export async function POST(req: NextRequest) {
         const body = await req.json();
 
         // Call Core API securely from server-side
-        const coreUrl = process.env.NEXT_PUBLIC_CORE_URL || 'http://localhost:3000';
-        const response = await fetch(`${coreUrl}/api/external/transaction`, {
+        const envCoreUrl = process.env.NEXT_PUBLIC_CORE_URL || 'http://localhost:3000';
+        // Normalize URL logic:
+        // 1. Remove trailing slash
+        // 2. Remove trailing /api if present
+        // 3. Re-append /api/external/transaction
+        const normalizedBase = envCoreUrl.replace(/\/api\/?$/, '').replace(/\/$/, '');
+        const targetUrl = `${normalizedBase}/api/external/transaction`;
+
+        console.log(`[Checkout] Connecting to Core API at: ${targetUrl}`);
+
+        const response = await fetch(targetUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
