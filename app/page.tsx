@@ -45,17 +45,7 @@ export default function Shop() {
   const handleCheckout = async () => {
     setLoading(true);
     try {
-      const apiEndpoint = `${process.env.NEXT_PUBLIC_CORE_URL}/external/transaction`;
-      // Usually internal API -> External API to keep secrets safe.
-      // But requirement says "Call Core API using NEXT_PUBLIC_CORE_URL".
-      // Direct call from client to Core API implies Core API handles CORS or is proxied.
-      // AND user said "Validate x-api-key header against a secure Env Variable".
-      // If we call from Client, we expose x-api-key??
-      // "Part 4: Checkout: Call Core API using NEXT_PUBLIC_CORE_URL".
-      // If I put x-api-key in client, it's NOT secure.
-      // I should use a generic public key or handle this via a Next.js Server Action / Route Handler in Demo_Shop that holds the secret.
-      // BUT requirement matches "Demo_Shop ... Checkout: Call Core API".
-      // I will implement a Proxy Route in Demo_Shop to hide the secret.
+      // const apiEndpoint = `${process.env.NEXT_PUBLIC_CORE_URL}/external/transaction`;
 
       const response = await fetch('/api/checkout', {
         method: 'POST',
@@ -69,7 +59,7 @@ export default function Shop() {
       } else {
         toast.error("Checkout failed");
       }
-    } catch (e) {
+    } catch {
       toast.error("Error during checkout");
     } finally {
       setLoading(false);
